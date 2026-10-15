@@ -3,15 +3,1073 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>3D Robot - A-Frame</title>
+
+    <!-- A-Frame 1.8.0 -->
     <script src="https://aframe.io/releases/1.8.0/aframe.min.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
 </head>
 
 <body>
-    <a-scene>
-        <a-box position="0 2 -3" color="skyblue">
+
+<a-scene
+    background="color: #ffffff"
+    renderer="antialias: true; colorManagement: true"
+>
+
+    <!-- ================================================= -->
+    <!-- アセット -->
+    <!-- ================================================= -->
+
+    <a-assets>
+
+        <!-- 金属 -->
+        <a-mixin
+            id="metal"
+            material="
+                color: #384452;
+                metalness: 0.9;
+                roughness: 0.25;
+            ">
+        </a-mixin>
+
+        <!-- 白い装甲 -->
+        <a-mixin
+            id="whiteArmor"
+            material="
+                color: #dce3eb;
+                metalness: 0.85;
+                roughness: 0.2;
+            ">
+        </a-mixin>
+
+        <!-- 黒い装甲 -->
+        <a-mixin
+            id="blackArmor"
+            material="
+                color: #151c25;
+                metalness: 0.95;
+                roughness: 0.18;
+            ">
+        </a-mixin>
+
+        <!-- 青い発光 -->
+        <a-mixin
+            id="blueLight"
+            material="
+                color: #00bfff;
+                emissive: #00bfff;
+                emissiveIntensity: 4;
+                metalness: 0.4;
+                roughness: 0.15;
+            ">
+        </a-mixin>
+
+    </a-assets>
+
+
+    <!-- ================================================= -->
+    <!-- ライト -->
+    <!-- ================================================= -->
+
+    <a-light
+        type="ambient"
+        color="#ffffff"
+        intensity="1.8">
+    </a-light>
+
+    <a-light
+        type="directional"
+        position="-5 10 8"
+        intensity="2.5">
+    </a-light>
+
+    <a-light
+        type="point"
+        position="0 5 2"
+        color="#66ccff"
+        intensity="1.5"
+        distance="10">
+    </a-light>
+
+
+    <!-- ================================================= -->
+    <!-- カメラ -->
+    <!-- ================================================= -->
+
+    <a-camera
+        position="0 4 20"
+        look-controls="enabled: true"
+        wasd-controls="enabled: true">
+
+        <a-cursor
+            raycaster="objects: .clickable"
+            color="#00bfff">
+        </a-cursor>
+
+    </a-camera>
+    <a-cylinder position="0 -0.5 5" radius="3" height="1" color="dimgray" ></a-cylinder>
+    <a-cylinder position="4 -0.5 5" radius="3" height="1" color="dimgray" ></a-cylinder>
+    <a-cylinder position="-4 -0.5 5" radius="3" height="1" color="dimgray" ></a-cylinder>
+
+    <!-- ============================================ -->
+<!-- HEAVY WHITE ROBOT -->
+<!-- ============================================ -->
+
+<a-entity
+    id="player"
+    position="0 1.2 5"
+    rotation="0 180 0"
+    scale="1.2 1.2 1.2">
+
+    <!-- ================================= -->
+    <!-- 背中：大型バックパック -->
+    <!-- ================================= -->
+
+    <a-box
+        position="0 2.2 0.65"
+        width="1.15"
+        height="2.0"
+        depth="0.55"
+        color="#34383c"
+        material="
+            metalness:0.8;
+            roughness:0.28;
+        "
+        shadow="cast:true">
+    </a-box>
+
+
+    <!-- ================================= -->
+    <!-- 背中：左大型フィン -->
+    <!-- ================================= -->
+
+    <a-entity
+        position="-0.75 2.55 0.65"
+        rotation="0 0 -8">
+
+        <a-box
+            width="0.42"
+            height="2.8"
+            depth="0.3"
+            color="#eeeeeb"
+            material="
+                metalness:0.65;
+                roughness:0.3;
+            "
+            shadow="cast:true">
         </a-box>
-    </a-scene>
+
+        <!-- 黒い内部 -->
+        <a-box
+            position="0 0 0.17"
+            width="0.18"
+            height="2.45"
+            depth="0.04"
+            color="#34383d">
+        </a-box>
+
+        <!-- オレンジライン -->
+        <a-box
+            position="0 0 0.2"
+            width="0.04"
+            height="2.25"
+            depth="0.03"
+            color="#d88a22">
+        </a-box>
+
+        <!-- フィン先端 -->
+        <a-cone
+            position="0 1.55 0"
+            radius-bottom="0.25"
+            radius-top="0"
+            height="0.5"
+            color="#cfd2d0"
+            rotation="180 0 0">
+        </a-cone>
+
+    </a-entity>
+
+
+    <!-- ================================= -->
+    <!-- 背中：右大型フィン -->
+    <!-- ================================= -->
+
+    <a-entity
+        position="0.75 2.55 0.65"
+        rotation="0 0 8">
+
+        <a-box
+            width="0.42"
+            height="2.8"
+            depth="0.3"
+            color="#eeeeeb"
+            material="
+                metalness:0.65;
+                roughness:0.3;
+            "
+            shadow="cast:true">
+        </a-box>
+
+        <a-box
+            position="0 0 0.17"
+            width="0.18"
+            height="2.45"
+            depth="0.04"
+            color="#34383d">
+        </a-box>
+
+        <a-box
+            position="0 0 0.2"
+            width="0.04"
+            height="2.25"
+            depth="0.03"
+            color="#d88a22">
+        </a-box>
+
+        <a-cone
+            position="0 1.55 0"
+            radius-bottom="0.25"
+            radius-top="0"
+            height="0.5"
+            color="#cfd2d0"
+            rotation="180 0 0">
+        </a-cone>
+
+    </a-entity>
+
+
+    <!-- ================================= -->
+    <!-- 胴体内部 -->
+    <!-- ================================= -->
+
+    <a-box
+        position="0 1.85 0"
+        width="0.9"
+        height="1.25"
+        depth="0.65"
+        color="#4a4e52"
+        material="
+            metalness:0.75;
+            roughness:0.3;
+        "
+        shadow="cast:true">
+    </a-box>
+
+
+    <!-- ================================= -->
+    <!-- 胸部装甲 -->
+    <!-- ================================= -->
+
+    <a-box
+        position="0 2.05 -0.38"
+        width="1.05"
+        height="1.0"
+        depth="0.25"
+        color="#f1f2ef"
+        material="
+            metalness:0.45;
+            roughness:0.32;
+        "
+        shadow="cast:true">
+    </a-box>
+
+
+    <!-- 胸中央 -->
+    <a-box
+        position="0 1.95 -0.53"
+        width="0.42"
+        height="0.72"
+        depth="0.12"
+        color="#dfe2df"
+        material="
+            metalness:0.5;
+            roughness:0.3;
+        ">
+    </a-box>
+
+
+    <!-- 胸中央スリット -->
+    <a-box
+        position="0 1.95 -0.6"
+        width="0.12"
+        height="0.45"
+        depth="0.04"
+        color="#171a1d">
+    </a-box>
+
+
+    <!-- ================================= -->
+    <!-- 左胸装甲 -->
+    <!-- ================================= -->
+
+    <a-box
+        position="-0.52 2.18 -0.43"
+        width="0.5"
+        height="0.65"
+        depth="0.3"
+        rotation="0 0 -8"
+        color="#ffffff"
+        material="
+            metalness:0.45;
+            roughness:0.3;
+        "
+        shadow="cast:true">
+    </a-box>
+
+
+    <!-- ================================= -->
+    <!-- 右胸装甲 -->
+    <!-- ================================= -->
+
+    <a-box
+        position="0.52 2.18 -0.43"
+        width="0.5"
+        height="0.65"
+        depth="0.3"
+        rotation="0 0 8"
+        color="#ffffff"
+        material="
+            metalness:0.45;
+            roughness:0.3;
+        "
+        shadow="cast:true">
+    </a-box>
+
+
+    <!-- ================================= -->
+    <!-- 首 -->
+    <!-- ================================= -->
+
+    <a-cylinder
+        position="0 2.65 0"
+        radius="0.18"
+        height="0.25"
+        color="#272b2f"
+        material="
+            metalness:0.8;
+            roughness:0.25;
+        ">
+    </a-cylinder>
+
+
+    <!-- ================================= -->
+    <!-- 頭 -->
+    <!-- ================================= -->
+
+    <a-box
+        position="0 2.98 0"
+        width="0.6"
+        height="0.62"
+        depth="0.52"
+        color="#e8eae7"
+        material="
+            metalness:0.45;
+            roughness:0.3;
+        "
+        shadow="cast:true">
+    </a-box>
+
+
+    <!-- 顔 -->
+    <a-box
+        position="0 2.91 -0.3"
+        width="0.36"
+        height="0.25"
+        depth="0.08"
+        color="#252a30"
+        material="
+            metalness:0.6;
+            roughness:0.25;
+        ">
+    </a-box>
+
+
+    <!-- ================================= -->
+    <!-- 青いカメラ -->
+    <!-- ================================= -->
+
+    <a-box
+        position="0 3.08 -0.34"
+        width="0.2"
+        height="0.22"
+        depth="0.06"
+        color="#267eea"
+        material="
+            emissive:#147cff;
+            emissiveIntensity:0.7;
+        ">
+    </a-box>
+
+
+    <!-- ================================= -->
+    <!-- アンテナ -->
+    <!-- ================================= -->
+
+    <a-box
+        position="-0.18 3.35 -0.02"
+        width="0.07"
+        height="0.65"
+        depth="0.07"
+        rotation="0 0 -25"
+        color="#e7a72f">
+    </a-box>
+
+    <a-box
+        position="0.18 3.35 -0.02"
+        width="0.07"
+        height="0.65"
+        depth="0.07"
+        rotation="0 0 25"
+        color="#e7a72f">
+    </a-box>
+
+
+    <!-- ================================= -->
+    <!-- 左肩 -->
+    <!-- ================================= -->
+
+    <a-entity
+        position="-0.82 2.35 0">
+
+        <a-box
+            width="0.72"
+            height="0.72"
+            depth="0.78"
+            rotation="0 0 -10"
+            color="#eeeeec"
+            material="
+                metalness:0.5;
+                roughness:0.3;
+            "
+            shadow="cast:true">
+        </a-box>
+
+        <a-cylinder
+            position="-0.15 0.15 -0.38"
+            radius="0.22"
+            height="0.08"
+            rotation="90 0 0"
+            color="#24282c">
+        </a-cylinder>
+
+    </a-entity>
+
+
+    <!-- ================================= -->
+    <!-- 右肩 -->
+    <!-- ================================= -->
+
+    <a-entity
+        position="0.82 2.35 0">
+
+        <a-box
+            width="0.72"
+            height="0.72"
+            depth="0.78"
+            rotation="0 0 10"
+            color="#eeeeec"
+            material="
+                metalness:0.5;
+                roughness:0.3;
+            "
+            shadow="cast:true">
+        </a-box>
+
+        <a-cylinder
+            position="0.15 0.15 -0.38"
+            radius="0.22"
+            height="0.08"
+            rotation="90 0 0"
+            color="#24282c">
+        </a-cylinder>
+
+    </a-entity>
+
+
+    <!-- ================================= -->
+    <!-- 左腕 -->
+    <!-- ================================= -->
+
+    <a-cylinder
+        position="-0.86 1.65 0"
+        radius="0.2"
+        height="0.95"
+        rotation="0 0 -10"
+        color="#70767b"
+        material="
+            metalness:0.8;
+            roughness:0.3;
+        "
+        shadow="cast:true">
+    </a-cylinder>
+
+
+    <!-- 左前腕装甲 -->
+    <a-box
+        position="-0.95 1.15 -0.02"
+        width="0.4"
+        height="0.7"
+        depth="0.42"
+        rotation="0 0 -10"
+        color="#e5e7e5"
+        material="
+            metalness:0.45;
+            roughness:0.3;
+        "
+        shadow="cast:true">
+    </a-box>
+
+
+    <!-- ================================= -->
+    <!-- 右腕 -->
+    <!-- ================================= -->
+
+    <a-cylinder
+        position="0.86 1.65 0"
+        radius="0.2"
+        height="0.95"
+        rotation="0 0 10"
+        color="#70767b"
+        material="
+            metalness:0.8;
+            roughness:0.3;
+        "
+        shadow="cast:true">
+    </a-cylinder>
+
+
+    <a-box
+        position="0.95 1.15 -0.02"
+        width="0.4"
+        height="0.7"
+        depth="0.42"
+        rotation="0 0 10"
+        color="#e5e7e5"
+        material="
+            metalness:0.45;
+            roughness:0.3;
+        "
+        shadow="cast:true">
+    </a-box>
+
+
+    <!-- ================================= -->
+    <!-- 腰 -->
+    <!-- ================================= -->
+
+    <a-box
+        position="0 0.9 0"
+        width="0.85"
+        height="0.45"
+        depth="0.62"
+        color="#3c4146"
+        material="
+            metalness:0.75;
+            roughness:0.3;
+        "
+        shadow="cast:true">
+    </a-box>
+
+
+    <!-- 腰フロント -->
+    <a-box
+        position="0 0.9 -0.38"
+        width="0.65"
+        height="0.5"
+        depth="0.16"
+        color="#e8e9e6"
+        shadow="cast:true">
+    </a-box>
+
+
+    <!-- ================================= -->
+    <!-- 左腰アーマー -->
+    <!-- ================================= -->
+
+    <a-box
+        position="-0.48 0.65 -0.18"
+        width="0.42"
+        height="0.62"
+        depth="0.35"
+        rotation="0 0 -8"
+        color="#eeeeeb"
+        shadow="cast:true">
+    </a-box>
+
+
+    <!-- ================================= -->
+    <!-- 右腰アーマー -->
+    <!-- ================================= -->
+
+    <a-box
+        position="0.48 0.65 -0.18"
+        width="0.42"
+        height="0.62"
+        depth="0.35"
+        rotation="0 0 8"
+        color="#eeeeeb"
+        shadow="cast:true">
+    </a-box>
+
+
+    <!-- ================================= -->
+    <!-- 左脚 上 -->
+    <!-- ================================= -->
+
+    <a-box
+        position="-0.38 0.25 0"
+        width="0.52"
+        height="1.0"
+        depth="0.55"
+        color="#777c80"
+        material="
+            metalness:0.75;
+            roughness:0.32;
+        "
+        shadow="cast:true">
+    </a-box>
+
+
+    <!-- 左脚 前装甲 -->
+    <a-box
+        position="-0.38 0.25 -0.3"
+        width="0.55"
+        height="0.85"
+        depth="0.25"
+        color="#f1f2ef"
+        shadow="cast:true">
+    </a-box>
+
+
+    <!-- ================================= -->
+    <!-- 右脚 上 -->
+    <!-- ================================= -->
+
+    <a-box
+        position="0.38 0.25 0"
+        width="0.52"
+        height="1.0"
+        depth="0.55"
+        color="#777c80"
+        material="
+            metalness:0.75;
+            roughness:0.32;
+        "
+        shadow="cast:true">
+    </a-box>
+
+
+    <a-box
+        position="0.38 0.25 -0.3"
+        width="0.55"
+        height="0.85"
+        depth="0.25"
+        color="#f1f2ef"
+        shadow="cast:true">
+    </a-box>
+
+
+    <!-- ================================= -->
+    <!-- 左膝 -->
+    <!-- ================================= -->
+
+    <a-box
+        position="-0.38 -0.4 -0.08"
+        width="0.58"
+        height="0.45"
+        depth="0.6"
+        rotation="0 0 -5"
+        color="#dfe1df"
+        material="
+            metalness:0.55;
+            roughness:0.3;
+        "
+        shadow="cast:true">
+    </a-box>
+
+
+    <!-- 左膝中央 -->
+    <a-cylinder
+        position="-0.38 -0.4 -0.39"
+        radius="0.13"
+        height="0.06"
+        rotation="90 0 0"
+        color="#292d31">
+    </a-cylinder>
+
+
+    <!-- ================================= -->
+    <!-- 右膝 -->
+    <!-- ================================= -->
+
+    <a-box
+        position="0.38 -0.4 -0.08"
+        width="0.58"
+        height="0.45"
+        depth="0.6"
+        rotation="0 0 5"
+        color="#dfe1df"
+        material="
+            metalness:0.55;
+            roughness:0.3;
+        "
+        shadow="cast:true">
+    </a-box>
+
+
+    <a-cylinder
+        position="0.38 -0.4 -0.39"
+        radius="0.13"
+        height="0.06"
+        rotation="90 0 0"
+        color="#292d31">
+    </a-cylinder>
+
+
+    <!-- ================================= -->
+    <!-- 左脚 下 -->
+    <!-- ================================= -->
+
+    <a-box
+        position="-0.38 -0.92 0"
+        width="0.5"
+        height="0.75"
+        depth="0.5"
+        color="#e9ebe8"
+        material="
+            metalness:0.5;
+            roughness:0.32;
+        "
+        shadow="cast:true">
+    </a-box>
+
+
+    <!-- ================================= -->
+    <!-- 右脚 下 -->
+    <!-- ================================= -->
+
+    <a-box
+        position="0.38 -0.92 0"
+        width="0.5"
+        height="0.75"
+        depth="0.5"
+        color="#e9ebe8"
+        material="
+            metalness:0.5;
+            roughness:0.32;
+        "
+        shadow="cast:true">
+    </a-box>
+
+
+    <!-- ================================= -->
+    <!-- 左脚 大型装甲 -->
+    <!-- ================================= -->
+
+    <a-box
+        position="-0.62 -0.65 -0.18"
+        width="0.3"
+        height="1.05"
+        depth="0.65"
+        rotation="0 0 -15"
+        color="#f3f3f0"
+        shadow="cast:true">
+    </a-box>
+
+
+    <a-box
+        position="-0.65 -0.9 -0.45"
+        width="0.35"
+        height="0.3"
+        depth="0.6"
+        rotation="0 0 -15"
+        color="#c9ccca"
+        shadow="cast:true">
+    </a-box>
+
+
+    <!-- ================================= -->
+    <!-- 右脚 大型装甲 -->
+    <!-- ================================= -->
+
+    <a-box
+        position="0.62 -0.65 -0.18"
+        width="0.3"
+        height="1.05"
+        depth="0.65"
+        rotation="0 0 15"
+        color="#f3f3f0"
+        shadow="cast:true">
+    </a-box>
+
+
+    <a-box
+        position="0.65 -0.9 -0.45"
+        width="0.35"
+        height="0.3"
+        depth="0.6"
+        rotation="0 0 15"
+        color="#c9ccca"
+        shadow="cast:true">
+    </a-box>
+
+
+    <!-- ================================= -->
+    <!-- 左足 -->
+    <!-- ================================= -->
+
+    <a-box
+        position="-0.38 -1.38 -0.2"
+        width="0.55"
+        height="0.28"
+        depth="0.8"
+        color="#eeeeec"
+        material="
+            metalness:0.5;
+            roughness:0.3;
+        "
+        shadow="cast:true">
+    </a-box>
+
+
+    <a-box
+        position="-0.38 -1.4 -0.58"
+        width="0.4"
+        height="0.18"
+        depth="0.25"
+        color="#33373b">
+    </a-box>
+
+
+    <!-- ================================= -->
+    <!-- 右足 -->
+    <!-- ================================= -->
+
+    <a-box
+        position="0.38 -1.38 -0.2"
+        width="0.55"
+        height="0.28"
+        depth="0.8"
+        color="#eeeeec"
+        material="
+            metalness:0.5;
+            roughness:0.3;
+        "
+        shadow="cast:true">
+    </a-box>
+
+
+    <a-box
+        position="0.38 -1.4 -0.58"
+        width="0.4"
+        height="0.18"
+        depth="0.25"
+        color="#33373b">
+    </a-box>
+
+
+    <!-- ================================= -->
+    <!-- 左脚ミサイルポッド -->
+    <!-- ================================= -->
+
+    <a-entity
+        position="-0.7 -0.05 -0.38"
+        rotation="0 0 -15">
+
+        <a-box
+            width="0.42"
+            height="0.55"
+            depth="0.42"
+            color="#34383d"
+            shadow="cast:true">
+        </a-box>
+
+        <!-- ミサイル穴 -->
+        <a-cylinder
+            position="-0.12 0.15 -0.23"
+            radius="0.06"
+            height="0.08"
+            rotation="90 0 0"
+            color="#111315">
+        </a-cylinder>
+
+        <a-cylinder
+            position="0.12 0.15 -0.23"
+            radius="0.06"
+            height="0.08"
+            rotation="90 0 0"
+            color="#111315">
+        </a-cylinder>
+
+        <a-cylinder
+            position="-0.12 -0.05 -0.23"
+            radius="0.06"
+            height="0.08"
+            rotation="90 0 0"
+            color="#111315">
+        </a-cylinder>
+
+        <a-cylinder
+            position="0.12 -0.05 -0.23"
+            radius="0.06"
+            height="0.08"
+            rotation="90 0 0"
+            color="#111315">
+        </a-cylinder>
+
+    </a-entity>
+
+
+    <!-- ================================= -->
+    <!-- 右脚ミサイルポッド -->
+    <!-- ================================= -->
+
+    <a-entity
+        position="0.7 -0.05 -0.38"
+        rotation="0 0 15">
+
+        <a-box
+            width="0.42"
+            height="0.55"
+            depth="0.42"
+            color="#34383d"
+            shadow="cast:true">
+        </a-box>
+
+        <a-cylinder
+            position="-0.12 0.15 -0.23"
+            radius="0.06"
+            height="0.08"
+            rotation="90 0 0"
+            color="#111315">
+        </a-cylinder>
+
+        <a-cylinder
+            position="0.12 0.15 -0.23"
+            radius="0.06"
+            height="0.08"
+            rotation="90 0 0"
+            color="#111315">
+        </a-cylinder>
+
+        <a-cylinder
+            position="-0.12 -0.05 -0.23"
+            radius="0.06"
+            height="0.08"
+            rotation="90 0 0"
+            color="#111315">
+        </a-cylinder>
+
+        <a-cylinder
+            position="0.12 -0.05 -0.23"
+            radius="0.06"
+            height="0.08"
+            rotation="90 0 0"
+            color="#111315">
+        </a-cylinder>
+
+    </a-entity>
+
+
+    <!-- ================================= -->
+    <!-- ライフル本体 -->
+    <!-- ================================= -->
+
+    <a-entity
+        position="-1.05 1.55 -0.55"
+        rotation="0 0 -62">
+
+        <!-- 本体 -->
+        <a-box
+            width="0.3"
+            height="1.8"
+            depth="0.28"
+            color="#353b40"
+            material="
+                metalness:0.85;
+                roughness:0.25;
+            "
+            shadow="cast:true">
+        </a-box>
+
+        <!-- 白い側面 -->
+        <a-box
+            position="0 0.15 -0.16"
+            width="0.2"
+            height="1.25"
+            depth="0.08"
+            color="#cdd0d0">
+        </a-box>
+
+        <!-- 銃身 -->
+        <a-cylinder
+            position="0 1.15 0"
+            radius="0.07"
+            height="1.1"
+            color="#191d20"
+            material="
+                metalness:0.9;
+                roughness:0.2;
+            ">
+        </a-cylinder>
+
+        <!-- マズル -->
+        <a-cylinder
+            position="0 1.72 0"
+            radius="0.11"
+            height="0.25"
+            color="#111416">
+        </a-cylinder>
+
+        <!-- スコープ -->
+        <a-box
+            position="0 0.55 0.18"
+            width="0.12"
+            height="0.35"
+            depth="0.15"
+            color="#24282c">
+        </a-box>
+
+    </a-entity>
+
+
+    <!-- ================================= -->
+    <!-- 肩の小型スラスター -->
+    <!-- ================================= -->
+
+    <a-cylinder
+        position="-0.65 2.65 0.05"
+        radius="0.15"
+        height="0.25"
+        color="#25292d"
+        material="
+            metalness:0.85;
+            roughness:0.2;
+        ">
+    </a-cylinder>
+
+    <a-cylinder
+        position="0.65 2.65 0.05"
+        radius="0.15"
+        height="0.25"
+        color="#25292d"
+        material="
+            metalness:0.85;
+            roughness:0.2;
+        ">
+    </a-cylinder>
+
+
+</a-entity>
 </body>
 
 </html>
