@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/3.4.7/aframe/build/aframe-ar.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-extras@7.5.4/dist/aframe-extras.min.js"></script>
+    <style>
+        #hud {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 999;
+        }
+        button {
+            margin-right: 10px;
+            padding: 12px 20px;
+            font-size: 20px;
+            border: none;
+            border-radius: 10px;
+            background-color: skyblue;
+            color: white;
+
+        }
+        select {
+            padding: 10px 12px;
+            font-size: 18px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div id="hud">
+        <select id="animationSelect">
+            <option value="AnimalArmature|Attack" selected>攻撃</option>
+            <option value="AnimalArmature|Death">死亡</option>
+            <option value="AnimalArmature|Eating">食べる</option>
+            <option value="AnimalArmature|Gallop">ダッシュ</option>
+            <option value="AnimalArmature|Gallop_Jump">ダッシュ＆ジャンプ</option>
+            <option value="AnimalArmature|Idle">アイドル</option>
+            <option value="AnimalArmature|Idle_2">アイドル2</option>
+            <option value="AnimalArmature|Idle_2_HeadLow">アイドル3</option>
+            <option value="AnimalArmature|Idle_2_HitReact_Left">アイドル2_ヒット反応(左)</option>
+            <option value="AnimalArmature|Idle_2_HitReact_Right">アイドル2_ヒット反応(右)</option>
+            <option value="AnimalArmature|Jump_Toidle">アイドル3</option>
+            <option value="AnimalArmature|Walk">歩く</option>
+
+        </select>
+        <button id="enlargeButton">+</button>
+        <button id="shrinkButton">-</button>
+        <button id="rotateButton">←</button>
+        <button id="reverseButton">→</button>
+    </div>
+    <a-scene embedded arjs="sourceType: webcam">
+
+        <a-marker preset="hiro" smooth="true">
+            <a-entity id="model" position="0 0 0.5">
+                <a-gltf-model id="wolf" src="wolf.glb" position="0 0 0"
+                    scale="0.3 0.3 0.3" rotation="-90 0 0"
+                    animation-mixer="clip: AnimalArmature|Attack"></a-gltf-model>
+            </a-entity>
+        </a-marker>
+
+        <a-entity camera></a-entity>
+        <script>
+            const wolf = document.getElementById('wolf');
+            const animationSelect = document.getElementById('animationSelect');
+            const enlargeButton = document.getElementById('enlargeButton');
+            const shrinkButton = document.getElementById('shrinkButton');
+            const rotateButton = document.getElementById('rotateButton');
+            const reverseButton = document.getElementById('reverseButton');
+            const model = document.getElementById('model');
+             let size = 0.3;
+
+        function enlargeModel() {
+            size += 0.1;
+            model.setAttribute('scale', `${size} ${size} ${size}`);
+        }
+        enlargeButton.addEventListener('click', enlargeModel);
+
+        function shrinkModel() {
+            size -= 0.1;
+            model.setAttribute('scale', `${size} ${size} ${size}`);
+        }
+        shrinkButton.addEventListener('click', shrinkModel);
+
+        let angle = 0;
+
+        function rotateModel() {
+            angle += 15;
+            model.setAttribute('rotation', `0 0 ${angle} `);
+        }
+        rotateButton.addEventListener('click', rotateModel);
+        function reverseModel() {
+            angle -= 15;
+            model.setAttribute('rotation', `0 0 ${angle} `);
+        }
+        reverseButton.addEventListener('click', reverseModel);
+
+        function changeAnimation() {
+            wolf.setAttribute("animation-mixer", "clip", animationSelect.value);
+        }
+        animationSelect.addEventListener('change', changeAnimation);
+        </script>
+</body>
+</html>
